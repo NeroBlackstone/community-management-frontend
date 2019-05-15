@@ -4,11 +4,12 @@ import App from './App.vue'
 import router from './router'
 import {HttpLink} from 'apollo-link-http'
 import {ApolloLink} from 'apollo-link'
-import {AUTH_TOKEN, USER_ID} from "./settings"
+import {AUTH_TOKEN, USER_ID,USER_ROLE} from "./settings"
 import {ApolloClient} from 'apollo-client'
 import {InMemoryCache} from 'apollo-cache-inmemory'
 import VueApollo from 'vue-apollo'
 import Sugar from 'sugar'
+import {ROLE_OF_USER} from "./queries";
 
 Sugar.extend();
 
@@ -42,12 +43,24 @@ const apolloProvider=new VueApollo({
 });
 
 let userId=localStorage.getItem(USER_ID);
+/*let role;
+if (!sessionStorage.getItem(USER_ROLE)){
+
+}*/
 
 new Vue({
   apolloProvider:apolloProvider,
   router,
   data:{
-    userId
+    userId,
+    role:'',
+  },
+  created(){
+    apolloClient.query({query:ROLE_OF_USER,variables:{id:userId}})
+        .then(result=>{
+          sessionStorage.setItem(USER_ROLE,result.data.user.role);
+          this.role=result.data.user.role;
+        });
   },
   render: h => h(App),
 }).$mount('#app');

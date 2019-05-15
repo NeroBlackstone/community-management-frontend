@@ -2,7 +2,7 @@
     <v-text-field
             prepend-icon="lock"
             name="password"
-            label="Password"
+            label="密码"
             id="password"
             :type="showPassword ? 'text' : 'password'"
             counter
@@ -24,7 +24,7 @@
                 showPassword:false,
                 rules:{
                     required:value=>!!value||'Required',
-                    min:v=>v.length>=this.minChar||`Password must have at least ${this.minChar} characters`,
+                    min:v=>v.length>=this.minChar||`密码至少需要${this.minChar} 位`,
                 },
             }
         },

@@ -1,8 +1,16 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import LoginForm from "./components/LoginForm";
-import SignUpForm from "./components/SignUpForm";
-import ResidentDialog from "./components/ResidentDialog";
+import LoginForm from "./views/LoginForm";
+import SignUpForm from "./views/SignUpForm";
+import ResidentManagement from "./views/ResidentManagement";
+import Tem from "./components/Tem";
+import AdviceAndReport from "./views/AdviceAndReport";
+import AdviceDetail from "./views/AdviceDetail";
+import WorkerManagement from "./views/WorkerManagement";
+import ActivityApplication from "./views/ActivityApplication";
+import Activity from "./views/Activity";
+import ActivityDetail from "./views/ActivityDetail";
+import ActivityManagement from "./views/ActivityManagement";
 
 Vue.use(Router);
 
@@ -19,8 +27,36 @@ export default new Router({
             component:SignUpForm
         },
         {
-            path:'/population',
-            component:ResidentDialog
-        }
+            path:'/residentManagement',
+            component:ResidentManagement
+        },
+        {
+            path:'/advice',
+            component:AdviceAndReport
+        },
+        {
+            path:'/advice/:id',
+            component:AdviceDetail
+        },
+        {
+            path:'/activity/:id',
+            component:ActivityDetail
+        },
+        {
+            path:'/workerManagement',
+            component:WorkerManagement
+        },
+        {
+            path:'/activityApplication',
+            component:ActivityApplication
+        },
+        {
+            path:'/activity',
+            component:Activity
+        },
+        {
+            path:'/activityManagement',
+            component:ActivityManagement
+        },
         ],
 })

@@ -5,21 +5,21 @@
             @done="onDone"
             #default="{mutate,loading,error}"
     >
-            <center-form title="SignUp">
+            <center-form title="注册">
                 <template #textField>
                     <v-text-field
                             prepend-icon="person"
                             name="userName"
-                            label="UserName"
+                            label="用户姓名"
                             type="text"
                             v-model="name"
-                            :rules="[() => !!name || 'This field is required']"
+                            :rules="[() => !!name || '必填']"
                     >
                     </v-text-field>
                     <v-text-field
                             prepend-icon="person"
                             name="idNumber"
-                            label="IdNumber"
+                            label="身份证号"
                             type="text"
                             mask="##################"
                             v-model="idNumber"
@@ -29,7 +29,7 @@
                     <v-text-field
                             prepend-icon="phone"
                             name="phoneNumber"
-                            label="PhoneNumber"
+                            label="电话号码"
                             type="text"
                             mask="###########"
                             v-model="phoneNumber"
@@ -42,27 +42,26 @@
                 <template #actionField>
                     <v-spacer></v-spacer>
                     <v-btn
-                            :disabled="loading||name.length===0||idNumber.length<18||phoneNumber.length<11||password.length<6"
+                            :disabled="loading||name.length===0||idNumber.length<18||phoneNumber.length<11||
+                            password.length<6"
                             @click="mutate()"
                             color="primary"
                     >
-                        SignUp
+                        注册
                     </v-btn>
                 </template>
             </center-form>
             <v-snackbar multi-line top color="red" v-model="error">
-                <p v-if="error">
-                    {{error}}
-                <p/>
+                <p v-if="error">{{error}}<p/>
             </v-snackbar>
     </ApolloMutation>
 </template>
 
 <script>
-    import CenterForm from "./CenterForm"
-    import PasswordTextField from "./PasswordTextField"
+    import CenterForm from "../components/CenterForm"
+    import PasswordTextField from "../components/PasswordTextField"
     import {SIGN_UP} from "../queries";
-    import {USER_ID,AUTH_TOKEN,TEXT_FIELD_RULES} from "../settings";
+    import {USER_ID,AUTH_TOKEN,TEXT_FIELD_RULES,USER_ROLE} from "../settings";
     export default {
         name: "SignUpForm",
         components:{
@@ -83,15 +82,17 @@
         methods:{
             onDone(resultObject){
                 const id=resultObject.data.signup.user.id;
+                const role=resultObject.data.signup.user.role;
                 const token=resultObject.data.signup.token;
-                this.saveUserData(id,token)
+                this.saveUserData(id,role,token);
+                this.$router.push('/')
             },
-            saveUserData(id,token){
+            saveUserData(id,role,token){
                 localStorage.setItem(USER_ID,id);
                 localStorage.setItem(AUTH_TOKEN,token);
                 this.$root.$data.userId=localStorage.getItem(USER_ID);
+                this.$root.$data.role=sessionStorage.getItem(USER_ROLE);
             },
-
         }
     }
 </script>
