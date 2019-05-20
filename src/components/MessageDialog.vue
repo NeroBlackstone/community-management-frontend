@@ -1,3 +1,9 @@
+<i18n>
+    en:
+        yourAdviceOrReport: 'Your advice or report...'
+    zh-cn:
+        yourAdviceOrReport: '你的意见或是举报'
+</i18n>
 <template>
     <v-dialog v-model="dialog">
         <template #activator="{on}">
@@ -18,7 +24,7 @@
                 <!--single-line:Label does not move on focus/dirty-->
                 <v-text-field
                         class="justify-center layout px-2"
-                        label="标题"
+                        :label="$t('title')"
                         single-line
                         hide-details
                         v-model="message.title"
@@ -27,7 +33,7 @@
                 <v-divider></v-divider>
                 <v-textarea
                         class="justify-center layout px-2"
-                        label="你的意见或是建议"
+                        :label="$t('yourAdviceOrReport')"
                         counter
                         maxlength="120"
                         single-line

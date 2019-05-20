@@ -8,8 +8,12 @@ import {AUTH_TOKEN, USER_ID,USER_ROLE} from "./settings"
 import {ApolloClient} from 'apollo-client'
 import {InMemoryCache} from 'apollo-cache-inmemory'
 import VueApollo from 'vue-apollo'
+import VueI18n from 'vue-i18n'
 import Sugar from 'sugar'
 import {ROLE_OF_USER} from "./queries";
+
+Vue.use(VueApollo);
+Vue.use(VueI18n);
 
 Sugar.extend();
 
@@ -33,8 +37,6 @@ const apolloClient=new ApolloClient({
   connectToDevTools:true
 });
 
-Vue.use(VueApollo);
-
 const apolloProvider=new VueApollo({
   defaultClient:apolloClient,
   defaultOptions:{
@@ -42,15 +44,16 @@ const apolloProvider=new VueApollo({
   }
 });
 
-let userId=localStorage.getItem(USER_ID);
-/*let role;
-if (!sessionStorage.getItem(USER_ROLE)){
+const i18n=new VueI18n({
+  locale:'zh-cn',
+});
 
-}*/
+let userId=localStorage.getItem(USER_ID);
 
 new Vue({
   apolloProvider:apolloProvider,
   router,
+  i18n,
   data:{
     userId,
     role:'',

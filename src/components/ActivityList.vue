@@ -1,15 +1,28 @@
+<i18n src="../../locales.yaml"></i18n>
+<i18n>
+    en:
+        activityList: 'Activity List'
+    zh-cn:
+        activityList: '活动列表'
+</i18n>
 <template>
     <ApolloQuery :query="query" :variables="{id:userId}" #default="{result:{loading,error,data}}">
         <div v-if="data">
-            <v-subheader>活动列表：</v-subheader>
+            <v-subheader>{{$t('activityList')}}</v-subheader>
             <v-list two-line>
                 <template v-for="activity in data.activities">
                     <v-list-tile :key="activity.id" @click="$router.push({path:`/activity/${activity.id}`})">
                         <v-list-tile-content>
                             <v-list-tile-title>{{activity.title}}</v-list-tile-title>
-                            <v-list-tile-sub-title v-if="activity.status=='PENDING'">已提交，待回复</v-list-tile-sub-title>
-                            <v-list-tile-sub-title v-else-if="activity.status=='APPROVED'">允许</v-list-tile-sub-title>
-                            <v-list-tile-sub-title v-else-if="activity.status=='REJECTED'">已拒绝</v-list-tile-sub-title>
+                            <v-list-tile-sub-title v-if="activity.status==='PENDING'">
+                                {{$t('pendingStatus')}}
+                            </v-list-tile-sub-title>
+                            <v-list-tile-sub-title v-else-if="activity.status==='APPROVED'">
+                                {{$t('approvedStatus')}}
+                            </v-list-tile-sub-title>
+                            <v-list-tile-sub-title v-else-if="activity.status==='REJECTED'">
+                                {{$t('rejectedStatus')}}
+                            </v-list-tile-sub-title>
                         </v-list-tile-content>
                     </v-list-tile>
                 </template>

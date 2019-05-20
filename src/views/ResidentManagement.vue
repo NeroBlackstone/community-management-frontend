@@ -143,7 +143,16 @@
             users:[],
             dialog:false,
             editedId:-1,
-            selectSex:['MALE','FEMALE'],
+            selectSex:[
+                {
+                    value:'MALE',
+                    text:'男'
+                },
+                {
+                    value:'FEMALE',
+                    text:"女"
+                }
+                ],
             headers:[
                 {
                     text:'居民姓名',
@@ -184,7 +193,7 @@
                     room:0,
                 }
             },
-            defaultItem: {
+            /*defaultItem: {
                 name:"",
                 idNumber:"",
                 phoneNumber:"",
@@ -194,7 +203,7 @@
                     unit:0,
                     room:0,
                 }
-            },
+            },*/
             rules:TEXT_FIELD_RULES
         }),
         computed:{
@@ -206,7 +215,17 @@
             close(){
                 this.dialog=false;
                 setTimeout(()=>{
-                    this.editedItem=Object.assign({},this.defaultItem);
+                    this.editedItem=Object.clone({
+                        name:"",
+                        idNumber:"",
+                        phoneNumber:"",
+                        sex:'',
+                        address:{
+                            building:0,
+                            unit:0,
+                            room:0,
+                        }
+                    },true);
                     this.editedId=-1
                 },300)
             },

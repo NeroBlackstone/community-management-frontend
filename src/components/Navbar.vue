@@ -1,15 +1,24 @@
+<i18n src="../../locales.yaml"></i18n>
 <template>
     <div >
-        <v-toolbar
-                color="blue-grey"
-                dark
-                fixed
-                app
-                clipped-right
-        >
+        <v-toolbar color="blue-grey" dark fixed app clipped-right>
             <v-toolbar-side-icon v-if="this.$root.$data.userId" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-            <v-toolbar-title>社区信息管理系统</v-toolbar-title>
+            <v-toolbar-title>{{$t('appName')}}</v-toolbar-title>
             <v-spacer></v-spacer>
+            <v-menu offset-y>
+                <template #activator="{ on }">
+                    <v-icon v-on="on">language</v-icon>
+                </template>
+                <v-list>
+                    <v-list-tile
+                            v-for="(langItem, index) in langsItem"
+                            :key="index"
+                            @click="$i18n.locale=langItem.lang"
+                    >
+                        <v-list-tile-title>{{ langItem.title }}</v-list-tile-title>
+                    </v-list-tile>
+                </v-list>
+            </v-menu>
             <v-btn v-if="this.$root.$data.userId" @click="logout" icon>
                 <v-icon>exit_to_app</v-icon>
             </v-btn>
@@ -34,13 +43,22 @@
 </template>
 
 <script>
-    //import {ROLE_OF_USER} from "../queries";
     import {USER_ID, AUTH_TOKEN, USER_ROLE} from "../settings";
 
     export default {
         name: "Navbar",
         data: () => ({
             drawer: null,
+            langsItem: [
+                {
+                    title: '简体中文',
+                    lang:'zh-cn'
+                },
+                {
+                    title: 'English',
+                    lang:'en'
+                },
+            ]
         }),
         methods:{
             logout () {
@@ -51,14 +69,6 @@
                 this.$router.push('/')
             }
         },
-/*        apollo:{
-            user:{
-                query: ROLE_OF_USER,
-                variables:{
-                    id:localStorage.getItem(USER_ID)
-                }
-            }
-        },*/
         computed:{
             links(){
                 if (this.$root.$data.role==="RESIDENT"){
@@ -78,7 +88,7 @@
                 else if (this.$root.$data.role==="WORKER"){
                     return [
                         {
-                            text:'意见和建议',
+                            text:'意见和举报',
                             icon:'',
                             router:'/advice'
                         },
@@ -96,7 +106,7 @@
                 }else if (this.$root.$data.role==="MANAGER"){
                     return [
                         {
-                            text:'意见和建议',
+                            text:'意见和举报',
                             icon:'',
                             router:'/advice'
                         },

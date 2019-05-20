@@ -24,8 +24,8 @@
         <v-dialog v-model="timeDialog">
             <v-card>
                 <v-card-text>
-                    <time-field v-model="editTime" title="time"></time-field>
-                    <date-field v-model="editDate" title="date"></date-field>
+                    <time-field v-model="editTime" title="时间"></time-field>
+                    <date-field v-model="editDate" title="日期"></date-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -42,7 +42,8 @@
             <v-card>
                 <v-card-text>
                     <v-textarea :rules="[rules.required]" label="回复" v-model="editReply"></v-textarea>
-                    <v-select :rules="[rules.required]" label="选择状态" :items="selectStatus" v-model="editStatus"></v-select>
+                    <v-select :rules="[rules.required]" label="选择状态" :items="selectStatus" v-model="editStatus">
+                    </v-select>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -77,7 +78,16 @@
             editId:'',
             editReply:'',
             editStatus:'',
-            selectStatus:['APPROVED',"REJECTED"],
+            selectStatus:[
+                {
+                    value:'APPROVED',
+                    text:'允许'
+                },
+                {
+                    value:"REJECTED",
+                    text:'拒绝'
+                }
+            ],
             rules:TEXT_FIELD_RULES,
             headers:[
                 {

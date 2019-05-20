@@ -1,3 +1,11 @@
+<i18n src="../../locales.yaml"></i18n>
+<i18n>
+    en:
+        loginError: 'You are not registered or the password is incorrect.'
+    zh-cn:
+        loginError: '您未注册或者密码错误.'
+</i18n>
+
 <template>
     <ApolloMutation
             :mutation="mutation"
@@ -5,35 +13,35 @@
             @done="onDone"
             #default="{mutate,loading,error}"
     >
-            <center-form title="登录">
+            <center-form :title="$t('login')">
                 <template #textField>
                     <v-text-field
                             prepend-icon="person"
                             name="idNumber"
-                            label="身份证号"
+                            :label="$t('idNumber')"
                             type="text"
                             mask="##################"
                             v-model="idNumber"
-                            :rules="[rules.required,rules.idNumberMin]"
+                            :rules="[rules.required($t('mustInput')),rules.idNumberMin($t('idNumberPrompt'))]"
                     >
                     </v-text-field>
                     <password-text-field min-char="6" v-model="password"></password-text-field>
                 </template>
                 <template #actionField>
                     <v-spacer></v-spacer>
-                    <v-btn to="/signup" color="primary">注册</v-btn>
+                    <v-btn to="/signup" color="primary">{{$t('signUp')}}</v-btn>
                     <v-btn
                             :disabled="loading||idNumber.length<18||password.length<6"
                             @click="mutate()"
                             color="primary"
                     >
-                        登录
+                        {{$t('login')}}
                     </v-btn>
                 </template>
             </center-form>
             <v-snackbar v-if="error" multi-line top color="red" v-model="error">
                 <p v-if="error">
-                    您未注册或者密码错误
+                    {{$t('loginError')}}
                 <p/>
             </v-snackbar>
     </ApolloMutation>
@@ -54,7 +62,6 @@
         data(){
             return {
                 mutation:LOGIN,
-                //query:ROLE_OF_USER,
                 idNumber:'',
                 password:'',
                 rules:TEXT_FIELD_RULES

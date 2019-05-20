@@ -3,7 +3,6 @@ import Router from 'vue-router'
 import LoginForm from "./views/LoginForm";
 import SignUpForm from "./views/SignUpForm";
 import ResidentManagement from "./views/ResidentManagement";
-import Tem from "./components/Tem";
 import AdviceAndReport from "./views/AdviceAndReport";
 import AdviceDetail from "./views/AdviceDetail";
 import WorkerManagement from "./views/WorkerManagement";

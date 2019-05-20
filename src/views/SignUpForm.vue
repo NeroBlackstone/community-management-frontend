@@ -1,3 +1,5 @@
+<i18n src="../../locales.yaml"></i18n>
+
 <template>
     <ApolloMutation
             :mutation="mutation"
@@ -5,35 +7,35 @@
             @done="onDone"
             #default="{mutate,loading,error}"
     >
-            <center-form title="注册">
+            <center-form :title="$t('signUp')">
                 <template #textField>
                     <v-text-field
                             prepend-icon="person"
                             name="userName"
-                            label="用户姓名"
+                            :label="$t('userName')"
                             type="text"
                             v-model="name"
-                            :rules="[() => !!name || '必填']"
+                            :rules="[() => !!name || $t('mustInput')]"
                     >
                     </v-text-field>
                     <v-text-field
                             prepend-icon="person"
                             name="idNumber"
-                            label="身份证号"
+                            :label="$t('idNumber')"
                             type="text"
                             mask="##################"
                             v-model="idNumber"
-                            :rules="[rules.required,rules.idNumberMin]"
+                            :rules="[rules.required($t('mustInput')),rules.idNumberMin($t('idNumberPrompt'))]"
                     >
                     </v-text-field>
                     <v-text-field
                             prepend-icon="phone"
                             name="phoneNumber"
-                            label="电话号码"
+                            :label="$t('phoneNumber')"
                             type="text"
                             mask="###########"
                             v-model="phoneNumber"
-                            :rules="[rules.required,rules.phoneNumberMin]"
+                            :rules="[rules.required($t('mustInput')),rules.phoneNumberMin($t('phoneNumberPrompt'))]"
                     >
                     </v-text-field>
                     <password-text-field min-char="6" v-model="password"></password-text-field>
@@ -47,7 +49,7 @@
                             @click="mutate()"
                             color="primary"
                     >
-                        注册
+                        {{$t('signUp')}}
                     </v-btn>
                 </template>
             </center-form>

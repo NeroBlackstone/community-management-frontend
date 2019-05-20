@@ -1,7 +1,13 @@
+<i18n>
+    en:
+        adviceList: 'Advice List'
+    zh-cn:
+        adviceList: '意见列表'
+</i18n>
 <template>
     <ApolloQuery :query="query" :variables="{id:userId}" #default="{result:{loading,error,data}}">
         <div v-if="data">
-            <v-subheader>意见列表</v-subheader>
+            <v-subheader>{{$t('adviceList')}}</v-subheader>
             <v-list two-line >
                 <template v-for="advice in data.getAdvicesByRole">
                     <v-list-tile :key="advice.id" @click="$router.push({path:`/advice/${advice.id}`})">
