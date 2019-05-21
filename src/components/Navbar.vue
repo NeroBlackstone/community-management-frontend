@@ -3,7 +3,7 @@
     <div >
         <v-toolbar color="blue-grey" dark fixed app clipped-right>
             <v-toolbar-side-icon v-if="this.$root.$data.userId" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-            <v-toolbar-title>{{$t('appName')}}</v-toolbar-title>
+            <v-toolbar-title v-t="'appName'"></v-toolbar-title>
             <v-spacer></v-spacer>
             <v-menu offset-y>
                 <template #activator="{ on }">
@@ -13,7 +13,7 @@
                     <v-list-tile
                             v-for="(langItem, index) in langsItem"
                             :key="index"
-                            @click="$i18n.locale=langItem.lang"
+                            @click="changeLang(langItem.lang)"
                     >
                         <v-list-tile-title>{{ langItem.title }}</v-list-tile-title>
                     </v-list-tile>
@@ -52,7 +52,7 @@
             langsItem: [
                 {
                     title: '简体中文',
-                    lang:'zh-cn'
+                    lang:'zhHans'
                 },
                 {
                     title: 'English',
@@ -67,6 +67,11 @@
                 sessionStorage.removeItem(USER_ROLE);
                 this.$root.$data.userId = localStorage.getItem(USER_ID);
                 this.$router.push('/')
+            },
+            changeLang(lang){
+                this.$root.$i18n.locale=lang;
+                this.$root.$vuetify.lang.current=lang;
+                localStorage.setItem('lang',lang);
             }
         },
         computed:{

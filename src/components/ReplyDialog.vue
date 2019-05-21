@@ -1,3 +1,10 @@
+<i18n>
+    en:
+        yourReply: 'Your Reply'
+    zhHans:
+        yourReply: '你的回复'
+</i18n>
+
 <template>
     <v-dialog v-model="dialog">
         <template #activator="{on}">
@@ -16,7 +23,7 @@
             <v-form>
                 <v-textarea
                         class="justify-center layout px-2"
-                        label="你的回复"
+                        :label="$t('yourReply')"
                         counter
                         maxlength="120"
                         single-line

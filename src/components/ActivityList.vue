@@ -2,26 +2,23 @@
 <i18n>
     en:
         activityList: 'Activity List'
-    zh-cn:
+    zhHans:
         activityList: '活动列表'
 </i18n>
 <template>
     <ApolloQuery :query="query" :variables="{id:userId}" #default="{result:{loading,error,data}}">
         <div v-if="data">
-            <v-subheader>{{$t('activityList')}}</v-subheader>
+            <v-subheader v-t="'activityList'"></v-subheader>
             <v-list two-line>
                 <template v-for="activity in data.activities">
                     <v-list-tile :key="activity.id" @click="$router.push({path:`/activity/${activity.id}`})">
                         <v-list-tile-content>
                             <v-list-tile-title>{{activity.title}}</v-list-tile-title>
-                            <v-list-tile-sub-title v-if="activity.status==='PENDING'">
-                                {{$t('pendingStatus')}}
+                            <v-list-tile-sub-title v-t="'pendingStatus'" v-if="activity.status==='PENDING'">
                             </v-list-tile-sub-title>
-                            <v-list-tile-sub-title v-else-if="activity.status==='APPROVED'">
-                                {{$t('approvedStatus')}}
+                            <v-list-tile-sub-title v-t="'approvedStatus'" v-else-if="activity.status==='APPROVED'">
                             </v-list-tile-sub-title>
-                            <v-list-tile-sub-title v-else-if="activity.status==='REJECTED'">
-                                {{$t('rejectedStatus')}}
+                            <v-list-tile-sub-title v-t="'rejectedStatus'" v-else-if="activity.status==='REJECTED'">
                             </v-list-tile-sub-title>
                         </v-list-tile-content>
                     </v-list-tile>

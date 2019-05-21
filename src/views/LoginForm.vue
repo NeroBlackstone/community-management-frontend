@@ -2,7 +2,7 @@
 <i18n>
     en:
         loginError: 'You are not registered or the password is incorrect.'
-    zh-cn:
+    zhHans:
         loginError: '您未注册或者密码错误.'
 </i18n>
 

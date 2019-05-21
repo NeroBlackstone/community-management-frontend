@@ -1,39 +1,48 @@
+<i18n src="../../locales.yaml"></i18n>
+
 <template>
     <div>
         <v-toolbar>
-            <v-toolbar-title>活动管理</v-toolbar-title>
+            <v-toolbar-title>{{$t('activityManagement')}}</v-toolbar-title>
             <v-divider class="mx-2" inset vertical></v-divider>
         </v-toolbar>
-        <v-data-table :headers="headers" :items="activities" class="elevation-1">
+        <v-data-table :headers="header" :items="activities" class="elevation-1">
             <template #items="props">
                 <td >{{props.item.title}}</td>
                 <td >{{props.item.owner.name}}</td>
-
-                <td v-if="props.item.status==='PENDING'">待审批</td>
-                <td v-else-if="props.item.status==='APPROVED'">已允许</td>
-                <td v-else-if="props.item.status==='REJECTED'">已拒绝</td>
+                <td v-if="props.item.status==='PENDING'">{{$t('pendingStatus')}}</td>
+                <td v-else-if="props.item.status==='APPROVED'">{{$t('approvedStatus')}}</td>
+                <td v-else-if="props.item.status==='REJECTED'">{{$t('rejectedStatus')}}</td>
                 <td>{{Date.create(props.item.startAt).format('{yyyy}-{MM}-{dd} {HH}:{mm}')}}</td>
                 <td class="justify-center layout px-0">
-                    <v-icon small class="mr-1" @click="editItemTime(props.item)">access_alarm</v-icon>
-                    <v-icon v-if="props.item.status==='PENDING'" small class="mr-1" @click="editItemStatus(props.item)">edit</v-icon>
-                    <v-icon small class="mr-1" @click="deleteItem(props.item)">delete</v-icon>
-                    <v-icon small @click="$router.push({path:`/activity/${props.item.id}`})">details</v-icon>
+                    <v-icon small class="mr-1" @click="editItemTime(props.item)">
+                        access_alarm
+                    </v-icon>
+                    <v-icon v-if="props.item.status==='PENDING'" small class="mr-1" @click="editItemStatus(props.item)">
+                        edit
+                    </v-icon>
+                    <v-icon small class="mr-1" @click="deleteItem(props.item)">
+                        delete
+                    </v-icon>
+                    <v-icon small @click="$router.push({path:`/activity/${props.item.id}`})">
+                        details
+                    </v-icon>
                 </td>
             </template>
         </v-data-table>
         <v-dialog v-model="timeDialog">
             <v-card>
                 <v-card-text>
-                    <time-field v-model="editTime" title="时间"></time-field>
-                    <date-field v-model="editDate" title="日期"></date-field>
+                    <time-field v-model="editTime" :title="$t('startTime')"></time-field>
+                    <date-field v-model="editDate" :title="$t('startDate')"></date-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="red" flat @click="closeTimeDialog">
-                        取消
+                        {{$t('cancel')}}
                     </v-btn>
                     <v-btn color="blue" flat @click="saveTime">
-                        保存
+                        {{$t('save')}}
                     </v-btn>
                 </v-card-actions>
             </v-card>
@@ -41,17 +50,22 @@
         <v-dialog v-model="replyDialog">
             <v-card>
                 <v-card-text>
-                    <v-textarea :rules="[rules.required]" label="回复" v-model="editReply"></v-textarea>
-                    <v-select :rules="[rules.required]" label="选择状态" :items="selectStatus" v-model="editStatus">
+                    <v-textarea :rules="[rules.required('mustInput')]" :label="$t('reply')" v-model="editReply">
+                    </v-textarea>
+                    <v-select
+                            :rules="[rules.required('mustInput')]"
+                            :label="$t('chooseStatus')"
+                            :items="selectStatus"
+                            v-model="editStatus">
                     </v-select>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="red" flat @click="closeReplyDialog">
-                        取消
+                        {{$t('cancel')}}
                     </v-btn>
                     <v-btn :disabled="editReply.length===0||editStatus.length===0" color="blue" flat @click="saveReply">
-                        保存
+                        {{$t('save')}}
                     </v-btn>
                 </v-card-actions>
             </v-card>
@@ -78,42 +92,7 @@
             editId:'',
             editReply:'',
             editStatus:'',
-            selectStatus:[
-                {
-                    value:'APPROVED',
-                    text:'允许'
-                },
-                {
-                    value:"REJECTED",
-                    text:'拒绝'
-                }
-            ],
             rules:TEXT_FIELD_RULES,
-            headers:[
-                {
-                    text:'活动名称',
-                    align:'left',
-                    sortable:false,
-                    value:'name'
-                },
-                {
-                    text:'申请人',
-                    value:'owner'
-                },
-                {
-                    text:'活动状态',
-                    value:'status'
-                },
-                {
-                    text:'日期',
-                    value:'date'
-                },
-                {
-                    text:'操作',
-                    value:'name',
-                    sortable:false
-                }
-            ]
         }),
         methods:{
             deleteItem(item){
@@ -191,6 +170,47 @@
                 });
                 this.closeReplyDialog();
             },
+        },
+        computed:{
+            selectStatus(){
+                return [
+                    {
+                        value:'APPROVED',
+                        text:this.$t('approve')
+                    },
+                    {
+                        value:"REJECTED",
+                        text:this.$t('reject')
+                    }
+                ]
+            },
+            header(){
+                return [
+                    {
+                        text:this.$t('activityName'),
+                        align:'left',
+                        sortable:false,
+                        value:'name'
+                    },
+                    {
+                        text:this.$t('applicant'),
+                        value:'owner'
+                    },
+                    {
+                        text:this.$t('activityStatus'),
+                        value:'status'
+                    },
+                    {
+                        text:this.$t('date'),
+                        value:'date'
+                    },
+                    {
+                        text:this.$t('action'),
+                        value:'name',
+                        sortable:false
+                    }
+                ]
+            }
         },
         apollo:{
             activities:{

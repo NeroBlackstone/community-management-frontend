@@ -1,7 +1,8 @@
+<i18n src="../../locales.yaml"></i18n>
 <template>
     <div>
         <v-toolbar>
-            <v-toolbar-title>社区人员管理</v-toolbar-title>
+            <v-toolbar-title>{{$t('populationManagement')}}</v-toolbar-title>
             <!--占位符 property 用来设置间距的类型：m - 对应 margin -->
             <!--占位符 direction 指定属性所应用到的方向：x - 同时对应*-left和*-right属性-->
             <!--占位符 size 控制属性的增量：2 - 将margin或者padding属性设置为$spacer * .5-->
@@ -10,7 +11,7 @@
             <v-spacer></v-spacer>
             <v-dialog v-model="dialog">
                 <template #activator="{on}">
-                    <v-btn color="primary" v-on="on">新建{{itemName}}</v-btn>
+                    <v-btn color="primary" v-on="on">{{$t('new')}} {{itemName}}</v-btn>
                 </template>
                 <v-card>
                     <v-card-title>
@@ -20,14 +21,14 @@
                         <!--v-layout is used for separating sections and contains the v-flex.-->
                         <!--The structure of your layout will be as follows, v-container » v-layout » v-flex-->
                         <v-container grid-list-md>
-                            <h2>居民信息</h2>
+                            <h2>{{$t('residentInfo')}}</h2>
                             <v-layout wrap>
                                 <v-flex xs12 sm6 md4>
                                     <v-text-field
                                             v-model="editedItem.name"
-                                            label="居民名字"
+                                            :label="$t('residentName')"
                                             type="text"
-                                            :rules="[() => !!editedItem.name || '必填']"
+                                            :rules="[() => !!editedItem.name || $t('mustInput')]"
                                     >
                                     </v-text-field>
                                 </v-flex>
@@ -35,8 +36,9 @@
                                     <v-text-field
                                             mask="##################"
                                             v-model="editedItem.idNumber"
-                                            label="身份证号"
-                                            :rules="[rules.required,rules.idNumberMin]"
+                                            :label="$t('idNumber')"
+                                            :rules="[rules.required($t('mustInput')),
+                                            rules.idNumberMin($t('idNumberPrompt'))]"
                                     >
                                     </v-text-field>
                                 </v-flex>
@@ -44,23 +46,24 @@
                                     <v-text-field
                                             mask="###########"
                                             v-model="editedItem.phoneNumber"
-                                            label="电话号码"
-                                            :rules="[rules.required,rules.phoneNumberMin]"
+                                            :label="$t('phoneNumber')"
+                                            :rules="[rules.required($t('mustInput')),
+                                            rules.phoneNumberMin($t('phoneNumberPrompt'))]"
                                     >
                                     </v-text-field>
                                 </v-flex>
                                 <v-flex xs12 sm6 md4>
-                                    <v-select :items="selectSex" label="性别" v-model="editedItem.sex"></v-select>
+                                    <v-select :items="selectSex" :label="$t('sex')" v-model="editedItem.sex"></v-select>
                                 </v-flex>
                             </v-layout>
-                            <h2>地址</h2>
+                            <h2>{{$t('address')}}</h2>
                             <v-layout wrap>
                                 <v-flex xs12 sm6 md4>
                                     <v-text-field
                                             mask="###########"
                                             v-model="editedItem.address.building"
-                                            label="楼栋号"
-                                            :rules="[() => !!editedItem.address.building || '必填']"
+                                            :label="$t('building')"
+                                            :rules="[() => !!editedItem.address.building || $t('mustInput')]"
                                     >
                                     </v-text-field>
                                 </v-flex>
@@ -68,8 +71,8 @@
                                     <v-text-field
                                             mask="###########"
                                             v-model="editedItem.address.unit"
-                                            label="单元号"
-                                            :rules="[() => !!editedItem.address.unit || '必填']"
+                                            :label="$t('unit')"
+                                            :rules="[() => !!editedItem.address.unit || $t('mustInput')]"
                                     >
                                     </v-text-field>
                                 </v-flex>
@@ -77,8 +80,8 @@
                                     <v-text-field
                                             mask="###########"
                                             v-model="editedItem.address.room"
-                                            label="房间号"
-                                            :rules="[() => !!editedItem.address.room || '必填']"
+                                            :label="$t('room')"
+                                            :rules="[() => !!editedItem.address.room || $t('mustInput')]"
                                     >
                                     </v-text-field>
                                 </v-flex>
@@ -92,7 +95,7 @@
                                 flat
                                 @click="close"
                         >
-                            取消
+                            {{$t('cancel')}}
                         </v-btn>
                         <v-btn
                                 color="blue"
@@ -103,7 +106,7 @@
                                 editedItem.address.unit.length===0||editedItem.address.room.length===0||
                                 editedItem.sex.length===0"
                         >
-                            保存
+                            {{$t('save')}}
                         </v-btn>
                     </v-card-actions>
                 </v-card>
@@ -116,8 +119,8 @@
                 <td >{{props.item.idNumber}}</td>
                 <td >{{props.item.phoneNumber}}</td>
 
-                <td v-if="props.item.sex==='FEMALE'">女</td>
-                <td v-else>男</td>
+                <td v-if="props.item.sex==='FEMALE'">{{$t('female')}}</td>
+                <td v-else>{{$t('male')}}</td>
                 <td v-if="props.item.address">
                     {{props.item.address.building}}-{{props.item.address.unit}}-{{props.item.address.room}}
                 </td>
@@ -139,49 +142,9 @@
     export default {
         name: "ResidentManagement",
         data: () => ({
-            itemName:"居民",
             users:[],
             dialog:false,
             editedId:-1,
-            selectSex:[
-                {
-                    value:'MALE',
-                    text:'男'
-                },
-                {
-                    value:'FEMALE',
-                    text:"女"
-                }
-                ],
-            headers:[
-                {
-                    text:'居民姓名',
-                    align:'left',
-                    sortable:false,
-                    value:'name'
-                },
-                {
-                    text:'身份证号',
-                    value:'idNumber'
-                },
-                {
-                    text:'电话号码',
-                    value:'phoneNumber'
-                },
-                {
-                    text:'性别',
-                    value:'sex',
-                },
-                {
-                    text:'地址',
-                    value:'address'
-                },
-                {
-                    text:'操作',
-                    value:'name',
-                    sortable:false
-                }
-            ],
             editedItem:{
                 name:"",
                 idNumber:"",
@@ -193,23 +156,59 @@
                     room:0,
                 }
             },
-            /*defaultItem: {
-                name:"",
-                idNumber:"",
-                phoneNumber:"",
-                sex:'',
-                address:{
-                    building:0,
-                    unit:0,
-                    room:0,
-                }
-            },*/
             rules:TEXT_FIELD_RULES
         }),
         computed:{
             formTitle(){
-                return this.editedId === -1 ? `新建 ${this.itemName}` : `编辑 ${this.itemName}`
+                return this.editedId ===
+                -1 ? `${this.$t('new')} ${this.itemName}` : `${this.$t('edit')} ${this.itemName}`
             },
+            itemName(){
+                return this.$t('resident');
+            },
+            selectSex(){
+                return [
+                    {
+                        value:'MALE',
+                        text: this.$t('male')
+                    },
+                    {
+                        value:'FEMALE',
+                        text:this.$t('female')
+                    }
+                ]
+            },
+            headers(){
+                return [
+                    {
+                        text:this.$t('residentName'),
+                        align:'left',
+                        sortable:false,
+                        value:'name'
+                    },
+                    {
+                        text:this.$t('idNumber'),
+                        value:'idNumber'
+                    },
+                    {
+                        text:this.$t('phoneNumber'),
+                        value:'phoneNumber'
+                    },
+                    {
+                        text:this.$t('sex'),
+                        value:'sex',
+                    },
+                    {
+                        text:this.$t('address'),
+                        value:'address'
+                    },
+                    {
+                        text:this.$t('action'),
+                        value:'name',
+                        sortable:false
+                    }
+                ]
+            }
         },
         methods:{
             close(){
@@ -243,7 +242,7 @@
                 this.close()
             },
             deleteItem(item){
-                let deleteConfirm=confirm('你确定?');
+                let deleteConfirm=confirm(this.$t('areYouSure'));
                 if(deleteConfirm){
                     this.users.remove(item);
                     this.deleteResident(item.id);

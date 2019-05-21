@@ -5,5 +5,5 @@ export const TEXT_FIELD_RULES={
     required:str=>value=>!!value||str,
     idNumberMin:str=>v=>v.length>=18||str,
     phoneNumberMin:str=>v=>v.length>=11||str,
-    passwordMin:v=>v.length>=6||'请输入至少6位长度的密码',
+    passwordMin:str=>v=>v.length>=6|| str,
 };

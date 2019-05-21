@@ -1,8 +1,8 @@
 <i18n src="../../locales.yaml"></i18n>
 <i18n>
-     en:
+    en:
         passwordPrompt: 'Password requires at least {digit} digits'
-     zh-cn:
+    zhHans:
         passwordPrompt: '密码至少需要{digit}位'
  </i18n>
 

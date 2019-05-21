@@ -1,12 +1,13 @@
+<i18n src="../../locales.yaml"></i18n>
 <template>
     <div>
         <v-toolbar>
-            <v-toolbar-title>工作人员管理</v-toolbar-title>
+            <v-toolbar-title>{{$t('workerManagement')}}</v-toolbar-title>
             <v-divider class="mx-2" inset vertical></v-divider>
             <v-spacer></v-spacer>
             <v-dialog v-model="dialog">
                 <template #activator="{on}">
-                    <v-btn color="primary" v-on="on">新建 {{itemName}}</v-btn>
+                    <v-btn color="primary" v-on="on">{{$t('new')}} {{itemName}}</v-btn>
                 </template>
                 <v-card>
                     <v-card-title>
@@ -14,14 +15,14 @@
                     </v-card-title>
                     <v-card-text>
                         <v-container grid-list-md>
-                            <h2>工作人员信息</h2>
+                            <h2>{{$t('workerInfo')}}</h2>
                             <v-layout wrap>
                                 <v-flex xs12 sm6 md4>
                                     <v-text-field
                                             v-model="editedItem.name"
-                                            label="工作人员姓名"
+                                            :label="$t('workerName')"
                                             type="text"
-                                            :rules="[() => !!editedItem.name || '必填']"
+                                            :rules="[() => !!editedItem.name || $t('mustInput')]"
                                     >
                                     </v-text-field>
                                 </v-flex>
@@ -29,8 +30,9 @@
                                     <v-text-field
                                             mask="##################"
                                             v-model="editedItem.idNumber"
-                                            label="身份证号"
-                                            :rules="[rules.required,rules.idNumberMin]"
+                                            :label="$t('idNumber')"
+                                            :rules="[rules.required($t('mustInput')),
+                                            rules.idNumberMin($t('mustInput'))]"
                                     >
                                     </v-text-field>
                                 </v-flex>
@@ -38,16 +40,18 @@
                                     <v-text-field
                                             mask="###########"
                                             v-model="editedItem.phoneNumber"
-                                            label="电话号码"
-                                            :rules="[rules.required,rules.phoneNumberMin]"
+                                            :label="$t('phoneNumber')"
+                                            :rules="[rules.required($t('mustInput')),
+                                            rules.phoneNumberMin($t('phoneNumberPrompt'))]"
                                     >
                                     </v-text-field>
                                 </v-flex>
                                 <v-flex xs12 sm6 md4>
                                     <v-text-field
                                             v-model="editedItem.password"
-                                            label="密码"
-                                            :rules="[rules.required,rules.passwordMin]"
+                                            :label="$t('password')"
+                                            :rules="[rules.required($t('mustInput')),
+                                            rules.passwordMin($t('passwordPrompt'))]"
                                     >
                                     </v-text-field>
                                 </v-flex>
@@ -61,7 +65,7 @@
                                 flat
                                 @click="close"
                         >
-                            取消
+                            {{$t('cancel')}}
                         </v-btn>
                         <v-btn
                                 color="blue"
@@ -70,7 +74,7 @@
                                 :disabled="editedItem.name.length===0||editedItem.idNumber.length<18||
                                 editedItem.phoneNumber.length<11||editedItem.password.length<6"
                         >
-                            保存
+                            {{$t('save')}}
                         </v-btn>
                     </v-card-actions>
                 </v-card>
@@ -100,28 +104,6 @@
             dialog:false,
             users:[],
             editedId:-1,
-            itemName:"工作人员",
-            headers:[
-                {
-                text:'工作人员姓名',
-                align:'left',
-                sortable:false,
-                value:'name'
-                },
-                {
-                    text:'身份证号',
-                    value:'idNumber'
-                },
-                {
-                    text:'电话号码',
-                    value:'phoneNumber'
-                },
-                {
-                    text:'操作',
-                    value:'name',
-                    sortable:false
-                }
-            ],
             editedItem:{
                 name:'',
                 idNumber:'',
@@ -138,8 +120,34 @@
         }),
         computed:{
             formTitle(){
-                return this.editedId===-1?`新建${this.itemName}`:`编辑${this.itemName}`
+                return this.editedId===-1?`${this.$t('new')} ${this.itemName}`:`${this.$t('edit')} ${this.itemName}`
             },
+            itemName(){
+                return this.$t('worker');
+            },
+            headers(){
+                return [
+                    {
+                        text:this.$t('workerName'),
+                        align:'left',
+                        sortable:false,
+                        value:'name'
+                    },
+                    {
+                        text:this.$t('idNumber'),
+                        value:'idNumber'
+                    },
+                    {
+                        text:this.$t('phoneNumber'),
+                        value:'phoneNumber'
+                    },
+                    {
+                        text:this.$t('action'),
+                        value:'name',
+                        sortable:false
+                    }
+                ]
+            }
         },
         methods:{
             close(){

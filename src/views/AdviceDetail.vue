@@ -1,10 +1,17 @@
+<i18n src="../../locales.yaml"></i18n>
+<i18n>
+    en:
+        sendReply: 'Send Reply'
+    zhHans:
+        sendReply: '发送回复'
+</i18n>
 <template>
     <div>
         <v-toolbar>
-            <v-toolbar-title>意见和举报</v-toolbar-title>
+            <v-toolbar-title>{{$t('adviceAndReport')}}</v-toolbar-title>
             <v-divider class="mx-2" inset vertical></v-divider>
             <v-spacer></v-spacer>
-            <reply-dialog @sendReply="send($event)" title="发送回复"></reply-dialog>
+            <reply-dialog @sendReply="send($event)" :title="$t('sendReply')"></reply-dialog>
         </v-toolbar>
         <ApolloQuery :query="queryAdvice" :variables="{id:$route.params.id}" #default="{result:{loading,error,data}}">
             <div v-if="data">
@@ -14,7 +21,7 @@
                     </v-card-title>
                     <v-card-text class="headline font-weight-bold">{{data.advice.content}}</v-card-text>
                     <v-card-actions>
-                        <span>来自于居民: {{data.advice.owner.name}}</span>
+                        <span>{{$t('from')}} {{$t('resident')}}: {{data.advice.owner.name}}</span>
                     </v-card-actions>
                 </v-card>
             </div>
@@ -29,13 +36,13 @@
                         <v-card-text class="headline font-weight-bold">{{comment.content}}</v-card-text>
                         <v-card-actions >
                             <span v-if="comment.owner.role==='RESIDENT'">
-                                来自居民的回复 : {{comment.owner.name}}
+                                {{$t('from')}} {{$t('resident')}}: {{comment.owner.name}}
                             </span>
                             <span v-else-if="comment.owner.role==='WORKER'">
-                                来自于工作人员的回复 : {{comment.owner.name}}
+                                {{$t('from')}} {{$t('worker')}} : {{comment.owner.name}}
                             </span>
                             <span v-else-if="comment.owner.role==='MANAGER'">
-                                来自于管理员的回复 : {{comment.owner.name}}
+                                {{$t('from')}} {{$t('manager')}} : {{comment.owner.name}}
                             </span>
                         </v-card-actions>
                     </v-card>

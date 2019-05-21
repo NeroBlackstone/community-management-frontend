@@ -1,10 +1,20 @@
+<i18n src="../../locales.yaml"></i18n>
+<i18n>
+    en:
+        commitAdviceOrReport: 'Commit Advice Or Report'
+    zhHans:
+        commitAdviceOrReport: '提交意见和建议'
+</i18n>
 <template>
     <div>
         <v-toolbar>
-            <v-toolbar-title>意见和举报</v-toolbar-title>
+            <v-toolbar-title>{{$t('adviceAndReport')}}</v-toolbar-title>
             <v-divider class="mx-2" inset vertical></v-divider>
             <v-spacer></v-spacer>
-            <message-dialog v-if="$root.$data.role==='RESIDENT'" @sendMessage="send($event)" title="提交意见或建议">
+            <message-dialog
+                    v-if="$root.$data.role==='RESIDENT'"
+                    @sendMessage="send($event)"
+                    :title="$t('commitAdviceOrReport')" >
             </message-dialog>
         </v-toolbar>
         <advice-list></advice-list>

@@ -11,9 +11,18 @@ import VueApollo from 'vue-apollo'
 import VueI18n from 'vue-i18n'
 import Sugar from 'sugar'
 import {ROLE_OF_USER} from "./queries";
+import Vuetify from 'vuetify';
+import zhHans from 'vuetify/es5/locale/zh-Hans'
+import en from 'vuetify/es5/locale/en'
 
 Vue.use(VueApollo);
 Vue.use(VueI18n);
+Vue.use(Vuetify,{
+  lang:{
+    locales: {zhHans,en},
+    current: localStorage.getItem('lang') ? localStorage.getItem('lang') : 'zhHans'
+  }
+});
 
 Sugar.extend();
 
@@ -45,7 +54,7 @@ const apolloProvider=new VueApollo({
 });
 
 const i18n=new VueI18n({
-  locale:'zh-cn',
+  locale:localStorage.getItem('lang') ? localStorage.getItem('lang') : 'zhHans'
 });
 
 let userId=localStorage.getItem(USER_ID);

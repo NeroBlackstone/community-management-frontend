@@ -1,7 +1,8 @@
+<i18n src="../../locales.yaml"></i18n>
 <i18n>
     en:
         yourAdviceOrReport: 'Your advice or report...'
-    zh-cn:
+    zhHans:
         yourAdviceOrReport: '你的意见或是举报'
 </i18n>
 <template>
