@@ -3,7 +3,7 @@
     <div >
         <v-toolbar color="blue-grey" dark fixed app clipped-right>
             <v-toolbar-side-icon v-if="this.$root.$data.userId" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-            <v-toolbar-title v-t="'appName'"></v-toolbar-title>
+            <v-toolbar-title>{{$t('appName')}}</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-menu offset-y>
                 <template #activator="{ on }">
