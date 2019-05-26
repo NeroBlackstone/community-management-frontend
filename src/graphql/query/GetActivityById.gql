@@ -1,0 +1,7 @@
+#import "../fragment/ActivityFragment.gql"
+query GetActivityById($id:ID!){
+    activity(where:{id:$id}){
+        ...activity
+        reply
+    }
+}

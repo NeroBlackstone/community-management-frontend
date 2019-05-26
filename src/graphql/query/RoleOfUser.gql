@@ -1,0 +1,5 @@
+query RoleOfUser($id:ID){
+    user(where:{id:$id}){
+        role
+    }
+}

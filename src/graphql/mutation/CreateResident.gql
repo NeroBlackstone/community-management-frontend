@@ -1,0 +1,24 @@
+#import '../fragment/UserFragment.gql'
+#import '../fragment/ResidentFragment.gql'
+mutation CreateResident(
+    $idNumber:String!,
+    $name:String!,
+    $phoneNumber:String!,
+    $sex:Sex!,
+    $building:Int!,
+    $unit:Int!,
+    $room:Int!
+){
+    createResident(
+        name:$name,
+        phoneNumber:$phoneNumber,
+        idNumber:$idNumber,
+        sex:$sex,
+        building:$building,
+        room:$room,
+        unit:$unit
+    ){
+        ...user
+        ...resident
+    }
+}

@@ -1,0 +1,16 @@
+#import '../fragment/ActivityFragment.gql'
+mutation UpdateActivityTime(
+    $id:ID!,
+    $startAt:DateTime!
+){
+    updateActivity(
+        where: {id: $id},
+        data: {startAt:$startAt}
+    ){
+        ...activity
+        owner{
+            id
+            name
+        }
+    }
+}

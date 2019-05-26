@@ -56,7 +56,7 @@
 </template>
 
 <script>
-    import {GET_ACTIVITY_BY_ID} from "../queries";
+    import GET_ACTIVITY_BY_ID from "../graphql/query/GetActivityById.gql";
 
     export default {
         name: "ActivityDetail",

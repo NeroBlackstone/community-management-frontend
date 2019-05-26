@@ -13,7 +13,7 @@
             <v-spacer></v-spacer>
             <message-dialog
                     v-if="$root.$data.role==='RESIDENT'"
-                    @sendMessage="send($event)"
+                    @sendMessage="send"
                     :title="$t('commitAdviceOrReport')" >
             </message-dialog>
         </v-toolbar>
@@ -23,7 +23,8 @@
 
 <script>
     import MessageDialog from "../components/MessageDialog";
-    import {CREATE_ADVICE, GET_ADVICE_BY_ROLE} from "../queries";
+    import CREATE_ADVICE from "../graphql/mutation/CreateAdvice.gql";
+    import GET_ADVICE_BY_ROLE from '../graphql/query/GetAdvicesByRole.gql'
     import {USER_ID} from "../settings";
     import AdviceList from "../components/AdviceList";
     export default {
@@ -60,11 +61,6 @@
                 store.writeQuery({query:GET_ADVICE_BY_ROLE,variables:{id:localStorage.getItem(USER_ID)},data})
             }
         },
-        /*apollo:{
-            me:{
-                query:ME
-            }
-        }*/
     }
 </script>
 

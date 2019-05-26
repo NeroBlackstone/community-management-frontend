@@ -1,0 +1,17 @@
+#import '../fragment/UserFragment.gql'
+mutation CreateWorker(
+    $name:String!,
+    $phoneNumber:String!,
+    $idNumber:String!,
+    $password:String!
+){
+    createWorker(
+        name:$name,
+        password:$password,
+        idNumber:$idNumber,
+        phoneNumber:$phoneNumber
+    ){
+        ...user
+        password
+    }
+}

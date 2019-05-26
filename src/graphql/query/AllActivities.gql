@@ -1,0 +1,10 @@
+#import "../fragment/ActivityFragment.gql"
+query AllActivities{
+    activities{
+        ...activity
+        owner{
+            id
+            name
+        }
+    }
+}

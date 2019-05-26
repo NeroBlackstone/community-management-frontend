@@ -1,0 +1,7 @@
+#import "../fragment/FileFragment.gql"
+
+query Files {
+  files: uploads {
+    ...file
+  }
+}

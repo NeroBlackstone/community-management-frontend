@@ -1,0 +1,10 @@
+#import '../fragment/ActivityFragment.gql'
+query MyActivities($id:ID){
+    activities(where:{owner:{id:$id}}){
+        ...activity
+        owner{
+            id
+            name
+        }
+    }
+}

@@ -24,7 +24,7 @@
 
 <script>
     import {USER_ID} from "../settings";
-    import {GET_ADVICE_BY_ROLE} from '../queries'
+    import GET_ADVICE_BY_ROLE from '../graphql/query/GetAdvicesByRole.gql'
     export default {
         name: "AdviceList",
         data:()=>({

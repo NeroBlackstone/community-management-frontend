@@ -74,7 +74,10 @@
 </template>
 
 <script>
-    import {ALL_ACTIVITIES, DELETE_ACTIVITY, UPDATE_ACTIVITY_STATUS, UPDATE_ACTIVITY_TIME} from "../queries";
+    import ALL_ACTIVITIES from '../graphql/query/AllActivities.gql'
+    import DELETE_ACTIVITY from '../graphql/mutation/DeleteActivity.gql'
+    import UPDATE_ACTIVITY_STATUS from '../graphql/mutation/UpdateActivityStatus.gql'
+    import UPDATE_ACTIVITY_TIME from '../graphql/mutation/UpdateActivityTime.gql'
     import TimeField from "../components/TimeField";
     import DateField from "../components/DateField";
     import {TEXT_FIELD_RULES} from "../settings";
@@ -96,7 +99,7 @@
         }),
         methods:{
             deleteItem(item){
-                let deleteConfirm=confirm('你确定吗');
+                let deleteConfirm=confirm(this.$t('areYouSure'));
                 if (deleteConfirm){
                     this.activities.remove(item);
                     this.deleteActivity(item.id)

@@ -1,0 +1,6 @@
+fragment advice on Advice{
+    id
+    title
+    content
+    createdAt
+}

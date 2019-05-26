@@ -1,0 +1,26 @@
+#import '../fragment/UserFragment.gql'
+#import '../fragment/ResidentFragment.gql'
+mutation UpdateResident(
+    $id:ID!,
+    $idNumber:String!,
+    $name:String!,
+    $phoneNumber:String!,
+    $sex:Sex!,
+    $building:Int!,
+    $unit:Int!,
+    $room:Int!
+){
+    updateResident(
+        id:$id,
+        name:$name,
+        phoneNumber:$phoneNumber,
+        idNumber:$idNumber,
+        sex:$sex,
+        building:$building,
+        unit:$unit,
+        room:$room
+    ){
+        ...user
+        ...resident
+    }
+}

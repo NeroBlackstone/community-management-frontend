@@ -1,0 +1,5 @@
+mutation DeleteActivity($id:ID){
+    deleteActivity(where:{id:$id}){
+        id
+    }
+}

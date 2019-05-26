@@ -1,0 +1,20 @@
+#import '../fragment/UserFragment.gql'
+mutation UpdateWorker(
+    $id:ID!,
+    $name:String!,
+    $phoneNumber:String!,
+    $idNumber:String!,
+    $password:String!
+){
+    updateUser(
+        where:{id:$id},
+        data:{
+            name:$name,
+            phoneNumber:$phoneNumber,
+            idNumber:$idNumber,
+            password:$password
+        }){
+        ...user
+        password
+    }
+}

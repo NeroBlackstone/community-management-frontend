@@ -1,0 +1,8 @@
+#import '../fragment/UserFragment.gql'
+#import '../fragment/ResidentFragment.gql'
+query GetUsersByRole($role:Role!,$isResident:Boolean!){
+    users(where:{role:$role}){
+        ...user
+        ...resident@include(if: $isResident)
+    }
+}

@@ -11,7 +11,7 @@
             <v-toolbar-title>{{$t('adviceAndReport')}}</v-toolbar-title>
             <v-divider class="mx-2" inset vertical></v-divider>
             <v-spacer></v-spacer>
-            <reply-dialog @sendReply="send($event)" :title="$t('sendReply')"></reply-dialog>
+            <reply-dialog @sendReply="send" :title="$t('sendReply')"></reply-dialog>
         </v-toolbar>
         <ApolloQuery :query="queryAdvice" :variables="{id:$route.params.id}" #default="{result:{loading,error,data}}">
             <div v-if="data">
@@ -53,7 +53,9 @@
 </template>
 
 <script>
-    import {ADVICE_AND_OWNER, ALL_COMMENTS_OF_ADVICE, CREATE_COMMENT_FOR_ADVICE} from "../queries";
+    import CREATE_REPLY_FOR_ADVICE from "../graphql/mutation/CreateReplyForAdvice.gql";
+    import ADVICE_AND_OWNER from '../graphql/query/AdviceAndOwner.gql'
+    import COMMENTS_OF_ADVICE from '../graphql/query/CommentsOfAdvice.gql'
     import ReplyDialog from "../components/ReplyDialog";
     import {USER_ID} from "../settings";
     export default {
@@ -63,7 +65,7 @@
         },
         data:()=>({
             queryAdvice:ADVICE_AND_OWNER,
-            queryComments:ALL_COMMENTS_OF_ADVICE
+            queryComments:COMMENTS_OF_ADVICE
         }),
         methods:{
             send(event){
@@ -71,7 +73,7 @@
             },
             async createComment(message){
                 await this.$apollo.mutate({
-                    mutation:CREATE_COMMENT_FOR_ADVICE,
+                    mutation:CREATE_REPLY_FOR_ADVICE,
                     variables:{
                         ownerId:localStorage.getItem(USER_ID),
                         adviceId:this.$route.params.id,
@@ -84,11 +86,11 @@
             },
             updateStoreAfterCreateComment(store,createComment){
                 const data=store.readQuery({
-                    query:ALL_COMMENTS_OF_ADVICE,
+                    query:COMMENTS_OF_ADVICE,
                     variables:{id:this.$route.params.id}
                 });
                 data.comments.push(createComment);
-                store.writeQuery({query:ALL_COMMENTS_OF_ADVICE,variables:{id:this.$route.params.id},data});
+                store.writeQuery({query:COMMENTS_OF_ADVICE,variables:{id:this.$route.params.id},data});
             }
         }
     }

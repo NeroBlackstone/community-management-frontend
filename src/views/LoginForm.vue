@@ -50,7 +50,7 @@
 <script>
     import CenterForm from "../components/CenterForm"
     import PasswordTextField from "../components/PasswordTextField"
-    import {LOGIN} from '../queries'
+    import LOGIN from '../graphql/mutation/Login.gql'
     import {USER_ID, AUTH_TOKEN, TEXT_FIELD_RULES, USER_ROLE} from "../settings";
 
     export default {

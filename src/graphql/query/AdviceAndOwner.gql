@@ -1,0 +1,9 @@
+query AdviceAndOwner($id:ID!){
+    advice(where:{id:$id}){
+        ...advice
+        owner{
+            id
+            name
+        }
+    }
+}

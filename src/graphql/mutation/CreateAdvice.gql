@@ -1,0 +1,18 @@
+#import "../fragment/AdviceFragment.gql"
+mutation CreateAdvice(
+    $id:ID!,
+    $title:String!,
+    $content:String!
+){
+    createAdvice(
+        data:{owner:{connect:{id:$id}},
+            title:$title,
+            content:$content
+        }){
+        ... advice
+        owner{
+            id
+            name
+        }
+    }
+}

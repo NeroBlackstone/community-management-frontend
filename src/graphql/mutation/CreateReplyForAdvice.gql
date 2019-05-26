@@ -1,0 +1,16 @@
+#import '../fragment/CommentFragment.gql'
+mutation CreateReplyForAdvice(
+    $ownerId:ID!,
+    $adviceId:ID!,
+    $comment:String!
+){
+    createComment(
+        data:{
+            owner:{connect:{id:$ownerId}},
+            advice:{connect:{id:$adviceId}},
+            content:$comment
+        }
+    ){
+        ...comment
+    }
+}

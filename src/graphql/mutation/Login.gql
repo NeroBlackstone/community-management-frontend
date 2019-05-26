@@ -1,0 +1,12 @@
+#import '../fragment/AuthPayloadFragment.gql'
+mutation Login(
+    $idNumber:String!,
+    $password:String!
+){
+    login(
+        idNumber:$idNumber,
+        password:$password
+    ){
+        ...authPayload
+    }
+}

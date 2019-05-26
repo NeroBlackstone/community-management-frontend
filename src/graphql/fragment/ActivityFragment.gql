@@ -1,0 +1,8 @@
+fragment activity on Activity{
+    id
+    title
+    content
+    place
+    startAt
+    status
+}

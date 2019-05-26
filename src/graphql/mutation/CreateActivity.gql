@@ -1,0 +1,24 @@
+#import '../fragment/ActivityFragment.gql'
+mutation CreateActivity(
+    $id:ID!,
+    $title:String!,
+    $content:String!,
+    $place:String!,
+    $startAt:DateTime!
+){
+    createActivity(
+        data:{
+            title:$title,
+            content:$content,
+            place:$place,
+            startAt:$startAt,
+            status:PENDING
+            owner:{connect:{id:$id}}
+        }
+    ){
+        ...activity
+        owner{
+            id
+        }
+    }
+}

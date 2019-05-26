@@ -1,0 +1,8 @@
+fragment resident on User{
+    sex
+    address{
+        building
+        unit
+        room
+    }
+}

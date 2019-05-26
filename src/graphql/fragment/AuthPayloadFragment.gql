@@ -1,0 +1,7 @@
+fragment authPayload on AuthPayload{
+    token
+    user{
+        id
+        role
+    }
+}

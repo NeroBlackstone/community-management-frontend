@@ -62,7 +62,7 @@
 <script>
     import CenterForm from "../components/CenterForm"
     import PasswordTextField from "../components/PasswordTextField"
-    import {SIGN_UP} from "../queries";
+    import SIGN_UP from "../graphql/mutation/SignUp.gql";
     import {USER_ID,AUTH_TOKEN,TEXT_FIELD_RULES,USER_ROLE} from "../settings";
     export default {
         name: "SignUpForm",
@@ -87,11 +87,12 @@
                 const role=resultObject.data.signup.user.role;
                 const token=resultObject.data.signup.token;
                 this.saveUserData(id,role,token);
-                this.$router.push('/')
+                this.$router.push('/activity')
             },
             saveUserData(id,role,token){
                 localStorage.setItem(USER_ID,id);
                 localStorage.setItem(AUTH_TOKEN,token);
+                sessionStorage.setItem(USER_ROLE,role);
                 this.$root.$data.userId=localStorage.getItem(USER_ID);
                 this.$root.$data.role=sessionStorage.getItem(USER_ROLE);
             },

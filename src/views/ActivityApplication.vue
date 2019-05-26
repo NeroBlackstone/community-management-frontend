@@ -46,7 +46,8 @@
     import {TEXT_FIELD_RULES, USER_ID} from "../settings";
     import DateField from "../components/DateField";
     import TimeField from "../components/TimeField";
-    import {CREATE_ACTIVITY,MY_ACTIVITIES} from "../queries";
+    import CREATE_ACTIVITY from "../graphql/mutation/CreateActivity.gql";
+    import MY_ACTIVITIES from '../graphql/query/MyActivities.gql'
 
     export default {
         name: "ActivityApplication",

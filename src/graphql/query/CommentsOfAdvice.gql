@@ -1,0 +1,6 @@
+#import '../fragment/CommentFragment.gql'
+query CommentsOfAdvice($id:ID!){
+    comments(where:{advice:{id:$id}}){
+        ...comment
+    }
+}

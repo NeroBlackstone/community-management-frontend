@@ -138,7 +138,10 @@
 
 <script>
     import {TEXT_FIELD_RULES} from "../settings";
-    import {ALL_RESIDENTS, CREATE_RESIDENTS, DELETE_RESIDENT, UPDATE_RESIDENT} from '../queries'
+    import UPDATE_RESIDENT from '../graphql/mutation/UpdateResident.gql'
+    import GET_USERS_BY_ROLE from '../graphql/query/GetUsersByRole.gql'
+    import DELETE_USER from '../graphql/mutation/DeleteUser.gql'
+    import CREATE_RESIDENT from '../graphql/mutation/CreateResident.gql'
     export default {
         name: "ResidentManagement",
         data: () => ({
@@ -250,19 +253,27 @@
             },
             async deleteResident(id){
                 await this.$apollo.mutate({
-                    mutation:DELETE_RESIDENT,
+                    mutation:DELETE_USER,
                     variables:{id},
-                    update:(store,{data:{deleteResident}})=>{
-                        this.updateStoreAfterDeleteResident(store,deleteResident)
+                    update:(store,{data:{deleteUser}})=>{
+                        this.updateStoreAfterDeleteResident(store,deleteUser)
                     }
                 })
             },
             updateStoreAfterDeleteResident(store,deleteResident){
                 const data=store.readQuery({
-                    query:ALL_RESIDENTS
+                    query:GET_USERS_BY_ROLE,
+                    variables:{
+                        role: 'RESIDENT',
+                        isResident: true
+                    }
                 });
                 data.users.remove(user=>user.id===deleteResident.id);
-                store.writeQuery({query:ALL_RESIDENTS,data});
+                store.writeQuery({query:GET_USERS_BY_ROLE,
+                    variables:{
+                        role: 'RESIDENT',
+                        isResident: true
+                    },data});
             },
             async updateResident(){
                 await this.$apollo.mutate({
@@ -281,7 +292,7 @@
             },
             async createResident(){
                 await this.$apollo.mutate({
-                    mutation:CREATE_RESIDENTS,
+                    mutation:CREATE_RESIDENT,
                     variables:{
                         idNumber:this.editedItem.idNumber,
                         name:this.editedItem.name,
@@ -299,15 +310,27 @@
             },
             updateStoreAfterCreateResident(store, createResident){
                 const data=store.readQuery({
-                    query:ALL_RESIDENTS
+                    query:GET_USERS_BY_ROLE,
+                    variables:{
+                        role: 'RESIDENT',
+                        isResident: true
+                    }
                 });
                 data.users.push(createResident);
-                store.writeQuery({query:ALL_RESIDENTS,data});
+                store.writeQuery({query:GET_USERS_BY_ROLE,
+                    variables:{
+                        role: 'RESIDENT',
+                        isResident: true
+                    },data});
             }
         },
         apollo:{
             users:{
-                query:ALL_RESIDENTS,
+                query:GET_USERS_BY_ROLE,
+                variables:{
+                    role: 'RESIDENT',
+                    isResident: true
+                }
             },
         }
     }

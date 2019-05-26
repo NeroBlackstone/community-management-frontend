@@ -29,7 +29,7 @@
 </template>
 
 <script>
-    import {MY_ACTIVITIES} from "../queries";
+    import MY_ACTIVITIES from "../graphql/query/MyActivities.gql";
     import {USER_ID} from "../settings";
 
     export default {

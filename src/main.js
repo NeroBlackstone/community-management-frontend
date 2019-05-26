@@ -6,7 +6,7 @@ import i18n from './plugins/i18n'
 import apolloProvider from './plugins/apollo'
 import {USER_ID,USER_ROLE} from "./settings"
 import Sugar from 'sugar'
-import {ROLE_OF_USER} from "./queries";
+import ROLE_OF_USER from "./graphql/query/RoleOfUser.gql";
 
 Sugar.extend();
 

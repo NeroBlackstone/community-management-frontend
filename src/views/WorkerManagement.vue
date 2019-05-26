@@ -96,7 +96,10 @@
 
 <script>
     import {TEXT_FIELD_RULES} from "../settings";
-    import {ALL_WORKERS, CREATE_WORKER, DELETE_WORKER, UPDATE_WORKER} from "../queries";
+    import UPDATE_WORKER from "../graphql/mutation/UpdateWorker.gql";
+    import GET_USERS_BY_ROLE from '../graphql/query/GetUsersByRole.gql'
+    import CREATE_WORKER from '../graphql/mutation/CreateWorker.gql'
+    import DELETE_USER from '../graphql/mutation/DeleteUser.gql'
 
     export default {
         name: "WorkerManagement",
@@ -199,10 +202,18 @@
             },
             updateStoreAfterCreateWorker(store,createWorker){
                 const data=store.readQuery({
-                    query:ALL_WORKERS
+                    query:GET_USERS_BY_ROLE,
+                    variables:{
+                        role: 'WORKER',
+                        isResident: false
+                    }
                 });
                 data.users.push(createWorker);
-                store.writeQuery({query:ALL_WORKERS,data})
+                store.writeQuery({query:GET_USERS_BY_ROLE,
+                    variables:{
+                        role: 'WORKER',
+                        isResident: false
+                    },data})
             },
             deleteItem(item){
                 let deleteConfirm=confirm('Are you sure');
@@ -213,7 +224,7 @@
             },
             async deleteWorker(id){
                 await this.$apollo.mutate({
-                    mutation:DELETE_WORKER,
+                    mutation:DELETE_USER,
                     variables:{id},
                     update:(store,{data:{deleteWorker}})=>{
                         this.updateStoreAfterDeleteWorker(store,deleteWorker)
@@ -222,15 +233,27 @@
             },
             updateStoreAfterDeleteWorker(store,deleteWorker){
                 const data=store.readQuery({
-                    query:ALL_WORKERS,
+                    query:GET_USERS_BY_ROLE,
+                    variables:{
+                        role: 'WORKER',
+                        isResident: false
+                    }
                 });
                 data.users.remove(user=>user.id===deleteWorker);
-                store.writeQuery({query:ALL_WORKERS,data});
+                store.writeQuery({query:GET_USERS_BY_ROLE,
+                    variables:{
+                        role: 'WORKER',
+                        isResident: false
+                    },data});
             }
         },
         apollo:{
             users:{
-                query:ALL_WORKERS
+                query:GET_USERS_BY_ROLE,
+                variables:{
+                    role: 'WORKER',
+                    isResident: false
+                }
             }
         }
     }
