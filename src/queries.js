@@ -468,27 +468,3 @@ export const UPDATE_ACTIVITY_STATUS=gql`
         }
     }
 `;
-
-export const UPLOAD_FILE=gql`
-    mutation uploadFile ($file: Upload!) {
-        singleUpload (file: $file) {
-            id
-            path
-            filename
-            mimetype
-            encoding
-        }
-    }
-`;
-
-export const FILES=gql`
-    query files {
-        files: uploads {
-            id
-            path
-            filename
-            mimetype
-            encoding
-        }
-    }
-`;

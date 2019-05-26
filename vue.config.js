@@ -10,5 +10,11 @@ module.exports = {
             .use('yaml')
             .loader('yaml-loader')
             .end();
-    }
+        config.module
+            .rule('graphql')
+            .test(/\.(graphql|gql)$/)
+            .use('graphql-tag/loader')
+            .loader('graphql-tag/loader')
+            .end();
+    },
 };

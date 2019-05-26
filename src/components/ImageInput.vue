@@ -12,7 +12,8 @@
 </template>
 
 <script>
-    import {UPLOAD_FILE,FILES} from '../queries'
+    import FILES from '../graphql/Files.gql'
+    import UPLOAD_FILE from '../graphql/UploadFile.gql'
     export default {
         name: "ImageInput",
         methods:{

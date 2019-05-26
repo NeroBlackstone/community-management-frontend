@@ -181,18 +181,7 @@
                         phoneNumber:this.editedItem.phoneNumber,
                         password:this.editedItem.phoneNumber
                     },
-                    update:(store,{date:{updateWorker}})=>{
-                        this.updateStoreAfterUpdateWorker(store,updateWorker);
-                    }
                 })
-            },
-            updateStoreAfterUpdateWorker(store,updateWorker){
-                const data=store.readQuery({
-                   query:ALL_WORKERS
-                });
-                data.users.remove(user=>user.id===updateWorker.id);
-                data.users.push(updateWorker);
-                store.writeQuery({query:ALL_WORKERS,data});
             },
             async createWorker(){
                 await this.$apollo.mutate({

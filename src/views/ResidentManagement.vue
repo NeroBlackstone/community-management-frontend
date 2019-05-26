@@ -277,18 +277,7 @@
                         unit:parseInt(this.editedItem.address.unit),
                         room:parseInt(this.editedItem.address.room)
                     },
-                    update:(store,{data:{updateResident}})=>{
-                        this.updateStoreAfterUpdateResident(store,updateResident);
-                    },
                 })
-            },
-            updateStoreAfterUpdateResident(store,updatedResident){
-                const data=store.readQuery({
-                    query:ALL_RESIDENTS
-                });
-                data.users.remove(user=>user.id===updatedResident.id);
-                data.users.push(updatedResident);
-                store.writeQuery({query:ALL_RESIDENTS,data});
             },
             async createResident(){
                 await this.$apollo.mutate({

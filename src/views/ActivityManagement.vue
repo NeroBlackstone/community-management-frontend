@@ -138,19 +138,8 @@
                         id:this.editId,
                         startAt:`${this.editDate}T${this.editTime}:00+08:00`,
                     },
-                    update:(store,{data:{updateActivity}})=>{
-                        this.updateStoreAfterUpdate(store,updateActivity);
-                    }
                 });
                 this.closeTimeDialog();
-            },
-            updateStoreAfterUpdate(store, updateActivity) {
-                const data=store.readQuery({
-                    query:ALL_ACTIVITIES
-                });
-                data.activities.remove(activity=>activity.id===updateActivity.id);
-                data.activities.push(updateActivity);
-                store.writeQuery({query:ALL_ACTIVITIES,data});
             },
             editItemStatus(activity){
                 this.replyDialog=true;
@@ -164,9 +153,6 @@
                         reply:this.editReply,
                         status:this.editStatus
                     },
-                    update:(store,{data:{updateActivity}})=>{
-                        this.updateStoreAfterUpdate(store,updateActivity);
-                    }
                 });
                 this.closeReplyDialog();
             },
