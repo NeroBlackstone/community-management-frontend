@@ -202,9 +202,7 @@
             }
         },
         apollo:{
-            activities:{
-                query:ALL_ACTIVITIES
-            },
+            activities:ALL_ACTIVITIES
         }
     }
 </script>

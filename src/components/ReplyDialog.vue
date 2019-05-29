@@ -8,7 +8,10 @@
 <template>
     <v-dialog v-model="dialog">
         <template #activator="{on}">
-            <v-btn color="primary" v-on="on">{{title}}</v-btn>
+            <!--fab:使用圆形按钮-->
+            <v-btn large fixed bottom right fab color="primary" v-on="on">
+                <v-icon>add</v-icon>
+            </v-btn>
         </template>
         <v-card>
             <v-toolbar card color="pink" dark>

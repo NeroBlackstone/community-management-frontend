@@ -1,6 +1,0 @@
-#import "../fragment/AdviceFragment.gql"
-query GetAdvicesByRole($id:ID!){
-    getAdvicesByRole(id:$id){
-        ... advice
-    }
-}

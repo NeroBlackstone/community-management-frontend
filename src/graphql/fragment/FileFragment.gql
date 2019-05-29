@@ -1,5 +1,5 @@
 fragment file on File {
-  id
+  fileId
   path
   filename
   mimetype

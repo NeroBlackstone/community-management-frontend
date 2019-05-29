@@ -1,3 +1,4 @@
+#import '../fragment/AdviceFragment.gql'
 query AdviceAndOwner($id:ID!){
     advice(where:{id:$id}){
         ...advice

@@ -11,44 +11,64 @@
             <v-toolbar-title>{{$t('adviceAndReport')}}</v-toolbar-title>
             <v-divider class="mx-2" inset vertical></v-divider>
             <v-spacer></v-spacer>
-            <reply-dialog @sendReply="send" :title="$t('sendReply')"></reply-dialog>
         </v-toolbar>
-        <ApolloQuery :query="queryAdvice" :variables="{id:$route.params.id}" #default="{result:{loading,error,data}}">
-            <div v-if="data">
-                <v-card class="mx-auto" color="#26c6da" dark max-width="800">
-                    <v-card-title>
-                        <span class="title font-weight-light">{{data.advice.title}}</span>
-                    </v-card-title>
-                    <v-card-text class="headline font-weight-bold">{{data.advice.content}}</v-card-text>
-                    <v-card-actions>
-                        <span>{{$t('from')}} {{$t('resident')}}: {{data.advice.owner.name}}</span>
-                    </v-card-actions>
-                </v-card>
-            </div>
-        </ApolloQuery>
-        <ApolloQuery :query="queryComments" :variables="{id:$route.params.id}" #default="{result:{loading,error,data}}">
-            <div v-if="data">
-                <div v-for="comment in data.comments" :key="comment.id">
-                    <v-card class="mx-auto" color="pink" dark max-width="800">
-                        <v-card-title>
-                            <span class="title font-weight-light">回复</span>
-                        </v-card-title>
-                        <v-card-text class="headline font-weight-bold">{{comment.content}}</v-card-text>
-                        <v-card-actions >
+        <v-timeline>
+            <ApolloQuery
+                    :query="queryAdvice"
+                    :variables="{id:$route.params.id}"
+                    #default="{result:{loading,error,data}}"
+            >
+                <v-timeline-item
+                        color="red"
+                        v-if="data"
+                >
+                    <template #opposite>
+                        <span>{{$t('resident')}}: {{data.advice.owner.name}}</span>
+                    </template>
+                    <v-card >
+                        <v-card-title>{{data.advice.title}}</v-card-title>
+                        <v-card-text>{{data.advice.content}}</v-card-text>
+                    </v-card>
+                </v-timeline-item>
+            </ApolloQuery>
+            <ApolloQuery
+                    :query="queryComments"
+                    :variables="{id:$route.params.id}"
+                    #default="{result:{loading,error,data}}"
+            >
+                <ApolloSubscribeToMore
+                        :document="subscription"
+                        :variables="{adviceId: $route.params.id}"
+                        :update-query="onCommentAdded"
+                >
+                </ApolloSubscribeToMore>
+                <div v-if="data">
+                    <v-timeline-item
+                            v-for="comment in data.comments"
+                            :key="comment.id"
+                            :color="comment.owner.role==='RESIDENT' ? 'red' : 'blue'"
+                            :left="comment.owner.role==='RESIDENT'"
+                            :right="comment.owner.role!=='RESIDENT'"
+                    >
+                        <template #opposite>
                             <span v-if="comment.owner.role==='RESIDENT'">
-                                {{$t('from')}} {{$t('resident')}}: {{comment.owner.name}}
+                                    {{$t('resident')}}: {{comment.owner.name}}
                             </span>
                             <span v-else-if="comment.owner.role==='WORKER'">
-                                {{$t('from')}} {{$t('worker')}} : {{comment.owner.name}}
+                                    {{$t('worker')}} : {{comment.owner.name}}
                             </span>
                             <span v-else-if="comment.owner.role==='MANAGER'">
-                                {{$t('from')}} {{$t('manager')}} : {{comment.owner.name}}
+                                    {{$t('manager')}} : {{comment.owner.name}}
                             </span>
-                        </v-card-actions>
-                    </v-card>
+                        </template>
+                        <v-card>
+                            <v-card-text>{{comment.content}}</v-card-text>
+                        </v-card>
+                    </v-timeline-item>
                 </div>
-            </div>
-        </ApolloQuery>
+            </ApolloQuery>
+        </v-timeline>
+        <reply-dialog @sendReply="send"></reply-dialog>
     </div>
 </template>
 
@@ -58,6 +78,7 @@
     import COMMENTS_OF_ADVICE from '../graphql/query/CommentsOfAdvice.gql'
     import ReplyDialog from "../components/ReplyDialog";
     import {USER_ID} from "../settings";
+    import CREATE_COMMENT_SUBSCRIPTION from '../graphql/subscription/CreateCommentSubscription.gql'
     export default {
         name: "AdviceDetail",
         components:{
@@ -65,7 +86,8 @@
         },
         data:()=>({
             queryAdvice:ADVICE_AND_OWNER,
-            queryComments:COMMENTS_OF_ADVICE
+            queryComments:COMMENTS_OF_ADVICE,
+            subscription:CREATE_COMMENT_SUBSCRIPTION
         }),
         methods:{
             send(event){
@@ -79,18 +101,15 @@
                         adviceId:this.$route.params.id,
                         comment:message
                     },
-                    update:(store,{data:{createComment}})=>{
-                        this.updateStoreAfterCreateComment(store,createComment);
-                    },
                 })
             },
-            updateStoreAfterCreateComment(store,createComment){
-                const data=store.readQuery({
-                    query:COMMENTS_OF_ADVICE,
-                    variables:{id:this.$route.params.id}
-                });
-                data.comments.push(createComment);
-                store.writeQuery({query:COMMENTS_OF_ADVICE,variables:{id:this.$route.params.id},data});
+            onCommentAdded(previousResult,{subscriptionData}){
+                const newResult={
+                    comments: [...previousResult.comments]
+                };
+                newResult.comments.push(subscriptionData.data.comment.node);
+                setTimeout(()=>window.scrollTo(0,document.body.scrollHeight),0);
+                return newResult
             }
         }
     }

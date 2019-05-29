@@ -24,7 +24,7 @@
 <script>
     import MessageDialog from "../components/MessageDialog";
     import CREATE_ADVICE from "../graphql/mutation/CreateAdvice.gql";
-    import GET_ADVICE_BY_ROLE from '../graphql/query/GetAdvicesByRole.gql'
+    import GET_ADVICES_BY_OWNER from '../graphql/query/GetAdvicesByOwner.gql'
     import {USER_ID} from "../settings";
     import AdviceList from "../components/AdviceList";
     export default {
@@ -52,13 +52,13 @@
             },
             updateStoreAfterCreateAdvice(store,createAdvice){
                 const data=store.readQuery({
-                    query:GET_ADVICE_BY_ROLE,
+                    query:GET_ADVICES_BY_OWNER,
                     variables:{
                         id:localStorage.getItem(USER_ID)
                     }
                 });
-                data.getAdvicesByRole.push(createAdvice);
-                store.writeQuery({query:GET_ADVICE_BY_ROLE,variables:{id:localStorage.getItem(USER_ID)},data})
+                data.advices.push(createAdvice);
+                store.writeQuery({query:GET_ADVICES_BY_OWNER,variables:{id:localStorage.getItem(USER_ID)},data})
             }
         },
     }

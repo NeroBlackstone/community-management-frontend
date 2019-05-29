@@ -1,0 +1,6 @@
+#import "../fragment/AdviceFragment.gql"
+query AllAdvices{
+    advices{
+        ...advice
+    }
+}

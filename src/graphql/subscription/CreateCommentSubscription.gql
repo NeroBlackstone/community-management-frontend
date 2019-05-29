@@ -1,0 +1,14 @@
+subscription CreateCommentSubcription($adviceId:ID!){
+    comment(adviceId: $adviceId){
+        node{
+            id
+            content
+            createdAt
+            owner{
+                id
+                name
+                role
+            }
+        }
+    }
+}
