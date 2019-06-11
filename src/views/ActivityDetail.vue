@@ -42,7 +42,7 @@
                     {{$t('address')}}：{{data.activity.place}}
                 </v-card-text>
                 <v-card-text class="headline font-italic">
-                    {{$t('startAt')}}: {{Date.create(data.activity.startAt).format('{yyyy}-{MM}-{dd} {HH}:{mm}')}}
+                    {{$t('startAt')}}: {{dateAndTimeParser(data.activity.startAt)}}
                 </v-card-text>
             </v-card>
             <v-card v-if="data.activity.reply" class="mx-auto" color="green" dark max-width="800">
@@ -57,12 +57,15 @@
 
 <script>
     import GET_ACTIVITY_BY_ID from "../graphql/query/GetActivityById.gql";
-
+    import {dateAndTimeParser} from '../settings'
     export default {
         name: "ActivityDetail",
         data:()=>({
             query:GET_ACTIVITY_BY_ID
-        })
+        }),
+        methods:{
+            dateAndTimeParser
+        }
     }
 </script>
 

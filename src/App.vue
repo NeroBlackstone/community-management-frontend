@@ -1,6 +1,6 @@
 <template>
-  <v-app>
-    <navbar></navbar>
+  <v-app :dark="darkTheme">
+    <navbar @change-theme="darkTheme=!darkTheme"></navbar>
     <v-content>
       <router-view></router-view>
     </v-content>
@@ -19,9 +19,8 @@ export default {
   },
   data () {
     return {
-
+      darkTheme:false,
     }
-  },
-
+  }
 }
 </script>

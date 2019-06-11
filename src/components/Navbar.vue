@@ -19,7 +19,10 @@
                     </v-list-tile>
                 </v-list>
             </v-menu>
-            <v-btn v-if="this.$root.$data.userId" @click="logout" icon>
+            <v-btn @click="changeTheme" icon>
+                <v-icon>{{themeIcon}}</v-icon>
+            </v-btn>
+            <v-btn v-show="this.$root.$data.userId" @click="logout" icon>
                 <v-icon>exit_to_app</v-icon>
             </v-btn>
         </v-toolbar>
@@ -49,6 +52,7 @@
         name: "Navbar",
         data: () => ({
             drawer: null,
+            themeIcon: 'brightness_3',
             langsItem: [
                 {
                     title: '简体中文',
@@ -72,6 +76,10 @@
                 this.$root.$i18n.locale=lang;
                 this.$root.$vuetify.lang.current=lang;
                 localStorage.setItem('lang',lang);
+            },
+            changeTheme(){
+                this.themeIcon=this.themeIcon==='brightness_3' ? 'wb_sunny' : 'brightness_3';
+                this.$emit('change-theme')
             }
         },
         computed:{
@@ -80,12 +88,12 @@
                     return [
                         {
                             text:'活动申请',
-                            icon:"",
+                            icon:"accessibility",
                             router:"/activity",
                         },
                         {
                             text:'提交意见和建议',
-                            icon:"",
+                            icon:"announcement",
                             router:'/advice'
                         },
                     ];
@@ -94,42 +102,52 @@
                     return [
                         {
                             text:'意见和举报',
-                            icon:'',
+                            icon:'announcement',
                             router:'/advice'
                         },
                         {
                             text:'社区人员管理',
-                            icon:'',
+                            icon:'contacts',
                             router:'/residentManagement'
                         },
                         {
                             text:'活动管理',
-                            icon:'',
+                            icon:'assessment',
                             router:'/activityManagement'
+                        },
+                        {
+                            text:'活动排程',
+                            icon:'assignment_turned_in',
+                            router:'/activityCalendar'
                         }
                     ];
                 }else if (this.$root.$data.role==="MANAGER"){
                     return [
                         {
                             text:'意见和举报',
-                            icon:'',
+                            icon:'announcement',
                             router:'/advice'
                         },
                         {
                             text:'社区人员管理',
-                            icon:'',
+                            icon:'contacts',
                             router:'/residentManagement'
                         },
 
                         {
                             text:'工作人员管理',
-                            icon:'',
+                            icon:'account_box',
                             router:'/workerManagement'
                         },
                         {
                             text:'活动管理',
-                            icon:'',
+                            icon:'assessment',
                             router:'/activityManagement'
+                        },
+                        {
+                            text:'活动排程',
+                            icon:'assignment_turned_in',
+                            router:'/activityCalendar'
                         }
                     ];
                 }else return [];

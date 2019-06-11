@@ -11,6 +11,7 @@ import Activity from "../views/Activity";
 import ActivityDetail from "../views/ActivityDetail";
 import ActivityManagement from "../views/ActivityManagement";
 import ImageInput from "../components/ImageInput";
+import ActivityCalendar from "../views/ActivityCalendar";
 
 Vue.use(Router);
 
@@ -61,6 +62,10 @@ export default new Router({
         {
             path:'/imageInput',
             component:ImageInput
+        },
+        {
+            path:'/activityCalendar',
+            component:ActivityCalendar
         }
         ],
 })

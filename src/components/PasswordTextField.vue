@@ -24,6 +24,7 @@
 </template>
 
 <script>
+    import {TEXT_FIELD_RULES} from '../settings'
     export default {
         name: "PasswordTextField",
         props:['value','minChar'],
@@ -31,7 +32,7 @@
             return {
                 showPassword:false,
                 rules:{
-                    required:value=>!!value||'Required',
+                    required:TEXT_FIELD_RULES.required(this.$t('mustInput')),//value=>!!value||this.$t('required'),
                     min:v=>v.length>=this.minChar||this.$t('passwordPrompt',{digit:this.minChar})
                 },
             }

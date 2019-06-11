@@ -7,3 +7,6 @@ export const TEXT_FIELD_RULES={
     phoneNumberMin:str=>v=>v.length>=11||str,
     passwordMin:str=>v=>v.length>=6|| str,
 };
+export const dateParser = (date)=> Date.create(date).format('{yyyy}-{MM}-{dd}');
+export const timeParser = (time)=> Date.create(time).format('{HH}:{mm}');
+export const dateAndTimeParser = (dateAndTime)=>Date.create(dateAndTime).format('{yyyy}-{MM}-{dd} {HH}:{mm}');

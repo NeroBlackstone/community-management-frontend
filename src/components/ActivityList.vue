@@ -10,7 +10,7 @@
         <div v-if="data">
             <v-subheader v-t="'activityList'"></v-subheader>
             <v-list two-line>
-                <template v-for="activity in data.activities">
+                <template v-for="(activity,index) in data.activities">
                     <v-list-tile :key="activity.id" @click="$router.push({path:`/activity/${activity.id}`})">
                         <v-list-tile-content>
                             <v-list-tile-title>{{activity.title}}</v-list-tile-title>
@@ -22,6 +22,7 @@
                             </v-list-tile-sub-title>
                         </v-list-tile-content>
                     </v-list-tile>
+                    <v-divider v-if="index + 1 < data.activities.length" :key="`divider-${index}`"></v-divider>
                 </template>
             </v-list>
         </div>

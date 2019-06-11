@@ -12,7 +12,9 @@ Sugar.extend();
 
 Vue.config.productionTip = false;
 
-let userId=localStorage.getItem(USER_ID);
+let userId;
+if (localStorage.getItem(USER_ID))
+    userId=localStorage.getItem(USER_ID);
 
 new Vue({
   apolloProvider:apolloProvider,
@@ -23,11 +25,13 @@ new Vue({
     role:'',
   },
   created(){
-    this.$apollo.query({query:ROLE_OF_USER,variables:{id:userId}})
-        .then(result=>{
-          sessionStorage.setItem(USER_ROLE,result.data.user.role);
-          this.role=result.data.user.role;
-        });
+      if (userId){
+          this.$apollo.query({query:ROLE_OF_USER,variables:{id:userId}}).then(result=>{
+              sessionStorage.setItem(USER_ROLE,result.data.user.role);
+              this.role=result.data.user.role;
+              /*this.$router.push('/advice')*/
+          });
+      }
   },
   render: h => h(App),
 }).$mount('#app');

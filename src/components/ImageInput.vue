@@ -1,13 +1,24 @@
 <template>
-    <div class="image-input">
-        <label for="field-image">Image</label>
-        <input
-                id="field-image"
-                type="file"
-                accept="image/*"
-                required
-                @change="onUploadImage"
-        >
+    <div>
+        <div class="image-input">
+            <label for="field-image">Image</label>
+            <input
+                    id="field-image"
+                    type="file"
+                    accept="image/*"
+                    required
+                    @change="onUploadImage"
+            >
+        </div>
+        <div class="images">
+            <div
+                    v-for="file of files"
+                    :key="file.id"
+                    class="image-item"
+            >
+                <img :src="`${$filesRoot}/${file.path}`" class="image"/>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -32,7 +43,11 @@
                     },
                 })
             }
-        }
+        },
+        apollo: {
+            files: FILES,
+        },
+
     }
 </script>
 

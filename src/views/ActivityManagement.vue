@@ -13,7 +13,7 @@
                 <td v-if="props.item.status==='PENDING'">{{$t('pendingStatus')}}</td>
                 <td v-else-if="props.item.status==='APPROVED'">{{$t('approvedStatus')}}</td>
                 <td v-else-if="props.item.status==='REJECTED'">{{$t('rejectedStatus')}}</td>
-                <td>{{Date.create(props.item.startAt).format('{yyyy}-{MM}-{dd} {HH}:{mm}')}}</td>
+                <td>{{dateAndTimeParser(props.item.startAt)}}</td>
                 <td class="justify-center layout px-0">
                     <v-icon small class="mr-1" @click="editItemTime(props.item)">
                         access_alarm
@@ -30,6 +30,7 @@
                 </td>
             </template>
         </v-data-table>
+
         <v-dialog v-model="timeDialog">
             <v-card>
                 <v-card-text>
@@ -47,13 +48,14 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+
         <v-dialog v-model="replyDialog">
             <v-card>
                 <v-card-text>
-                    <v-textarea :rules="[rules.required('mustInput')]" :label="$t('reply')" v-model="editReply">
+                    <v-textarea :rules="[rules.required($t('mustInput'))]" :label="$t('reply')" v-model="editReply">
                     </v-textarea>
                     <v-select
-                            :rules="[rules.required('mustInput')]"
+                            :rules="[rules.required($t('mustInput'))]"
                             :label="$t('chooseStatus')"
                             :items="selectStatus"
                             v-model="editStatus">
@@ -80,7 +82,7 @@
     import UPDATE_ACTIVITY_TIME from '../graphql/mutation/UpdateActivityTime.gql'
     import TimeField from "../components/TimeField";
     import DateField from "../components/DateField";
-    import {TEXT_FIELD_RULES} from "../settings";
+    import {dateParser, TEXT_FIELD_RULES, timeParser,dateAndTimeParser} from "../settings";
 
     export default {
         name: "ActivityManagement",
@@ -98,6 +100,7 @@
             rules:TEXT_FIELD_RULES,
         }),
         methods:{
+            dateAndTimeParser,
             deleteItem(item){
                 let deleteConfirm=confirm(this.$t('areYouSure'));
                 if (deleteConfirm){
@@ -123,8 +126,8 @@
             },
             editItemTime(activity){
                 this.timeDialog=true;
-                this.editDate=Date.create(activity.startAt).format('{yyyy}-{MM}-{dd}');
-                this.editTime=Date.create(activity.startAt).format('{HH}:{mm}');
+                this.editDate=dateParser(activity.startAt);
+                this.editTime=timeParser(activity.startAt);
                 this.editId=activity.id;
             },
             closeTimeDialog(){

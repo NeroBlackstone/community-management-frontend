@@ -9,13 +9,14 @@
         <div v-if="data">
             <v-subheader v-t="'adviceList'"></v-subheader>
             <v-list two-line >
-                <template v-for="advice in data.advices">
+                <template v-for="(advice,index) in data.advices">
                     <v-list-tile :key="advice.id" @click="$router.push({path:`/advice/${advice.id}`})">
                         <v-list-tile-content>
                             <v-list-tile-title >{{advice.title}}</v-list-tile-title>
                             <v-list-tile-sub-title >{{advice.content.first(20)}}...</v-list-tile-sub-title>
                         </v-list-tile-content>
                     </v-list-tile>
+                    <v-divider v-if="index + 1 < data.advices.length" :key="`divider-${index}`"></v-divider>
                 </template>
             </v-list>
         </div>
